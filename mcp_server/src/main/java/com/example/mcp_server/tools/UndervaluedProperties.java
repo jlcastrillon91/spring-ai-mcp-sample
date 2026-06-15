@@ -1,4 +1,4 @@
-package com.realestate.realestate_mcp_server.tools;
+package com.example.mcp_server.tools;
 
 import org.springframework.ai.mcp.annotation.McpTool;
 import org.springframework.ai.mcp.annotation.McpToolParam;

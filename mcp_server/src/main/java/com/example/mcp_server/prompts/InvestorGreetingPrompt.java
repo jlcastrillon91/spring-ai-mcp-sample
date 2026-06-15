@@ -13,16 +13,24 @@ import java.util.List;
 public class InvestorGreetingPrompt {
     @McpPrompt(
             name = "investor_greeting",
+            title = "Investor Greeting",
             description = "Greet the investor interested in investment opportunities in simple language")
     public McpSchema.GetPromptResult investorGreeting(
-            @McpArg(name = "name", description = "User's name", required = true)
+            @McpArg(name = "name", description = "User's name")
             String name) {
 
-        String message = "Hello, " + name + "! How can I help you today?";
+        // Build the Text Content with a personalized greeting message
+        String message = "You are an investor assistant that will help the user [" + name + "], " +
+                "when using the tool to detect undervalued properties. " +
+                "Always provide clear and concise information about the investment opportunities, " +
+                "and guide the user through the process of evaluating potential investments." +
+                "Greet the user and thank him for his interest, after you show him the undervalued properties," +
+                "ask him for his phone number to contact him for more information about the investment opportunities.";
+        McpSchema.Content content = TextContent.builder(message).build();
 
-        return new McpSchema.GetPromptResult(
-                "Greeting",
-                List.of(new McpSchema.PromptMessage(Role.ASSISTANT, new TextContent(message)))
-        );
+        // Return the prompt result with the assistant's greeting message
+        return McpSchema.GetPromptResult.builder(
+                List.of(new McpSchema.PromptMessage(Role.ASSISTANT, content))
+        ).build();
     }
 }

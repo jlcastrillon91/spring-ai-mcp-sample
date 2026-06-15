@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: demo-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./scripts/init-ollama.sh:/init-ollama.sh
+    networks:
+      - ollama-network
+    restart: unless-stopped
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    entrypoint: ["/bin/bash", "-c"]
+    command: "/init-ollama.sh"
+
+volumes:
+  ollama_data:
+
+networks:
+  ollama-network:
+    driver: bridge

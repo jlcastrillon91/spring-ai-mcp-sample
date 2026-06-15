@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
+<!doctype html>
+<html>
 <body>
-$END$
+<input id="msg" placeholder="Type message..." />
+<button onclick="send()">Send</button>
+
+<pre id="out"></pre>
+
+<script>
+    async function send() {
+      const out = document.getElementById("out");
+      out.textContent = "";
+
+      const res = await fetch("http://localhost:8080/prompt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: document.getElementById("msg").value
+        })
+      });
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        out.textContent += decoder.decode(value, { stream: true });
+      }
+    }
+</script>
 </body>
 </html>
